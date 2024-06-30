@@ -1,0 +1,25 @@
+networks:
+  leads-iq-network:
+    external: false
+services:
+  db:
+    networks:
+      - leads-iq-network
+    platform: linux/amd64
+    image: mysql:8.0
+    restart: always
+    container_name: leads-iq-db
+    env_file: ./.env
+    environment:
+      MYSQL_DATABASE: $MYSQLDB_DATABASE
+      MYSQL_USER: $MYSQLDB_USER
+      MYSQL_PASSWORD: $MYSQLDB_PASSWORD
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    expose:
+      - $MYSQLDB_LOCAL_PORT
+    volumes:
+      - leads-iq-db:/var/lib/mysql
+volumes:
+  leads-iq-db:
