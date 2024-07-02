@@ -1,11 +1,11 @@
-package com.leads_iq.stock_price_analytics.resource;
+package com.leadsIq.stockPriceAnalytics.infra.resource;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leads_iq.stock_price_analytics.service.MigrationService;
+import com.leadsIq.stockPriceAnalytics.domain.usecase.CreateDatabaseAndSchemasUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api")
@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MigrationResource {
 
-    private final MigrationService migrationService;
+    private final CreateDatabaseAndSchemasUseCase createDatabaseAndSchemasUseCase;
 
     @PostMapping("/db_create")
     public ResponseEntity<?> createDatabase() {
-        migrationService.initializeDatabase();
+        createDatabaseAndSchemasUseCase.execute();
         return ResponseEntity.ok().build();
     }
 }

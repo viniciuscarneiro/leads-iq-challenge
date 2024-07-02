@@ -1,10 +1,10 @@
-package com.leads_iq.stock_price_analytics;
+package com.leadsIq.stockPriceAnalytics;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StockPriceAnalyticsApplicationTests {
+class StockPriceEntityAnalyticsApplicationTests {
 
 	@Test
 	void contextLoads() {

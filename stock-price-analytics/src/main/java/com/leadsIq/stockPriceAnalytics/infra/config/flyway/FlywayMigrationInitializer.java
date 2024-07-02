@@ -1,4 +1,4 @@
-package com.leads_iq.stock_price_analytics.config.flyway;
+package com.leadsIq.stockPriceAnalytics.infra.config.flyway;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
