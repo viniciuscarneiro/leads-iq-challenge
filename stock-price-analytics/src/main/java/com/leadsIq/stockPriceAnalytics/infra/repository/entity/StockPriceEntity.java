@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -29,10 +28,10 @@ public class StockPriceEntity {
     @Column(nullable = false, unique = true)
     private LocalDate date;
 
-    private BigDecimal open;
-    private BigDecimal close;
-    private BigDecimal high;
-    private BigDecimal low;
+    private Double open;
+    private Double close;
+    private Double high;
+    private Double low;
     private Long volume;
 
     @Column(name = "created_at", nullable = false, updatable = false)

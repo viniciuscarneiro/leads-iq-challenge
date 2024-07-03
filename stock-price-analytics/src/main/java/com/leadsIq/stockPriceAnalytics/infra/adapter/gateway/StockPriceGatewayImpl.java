@@ -8,7 +8,9 @@ import com.leadsIq.stockPriceAnalytics.domain.entity.StockPrice;
 import com.leadsIq.stockPriceAnalytics.domain.exception.EntityNotFoundException;
 import com.leadsIq.stockPriceAnalytics.domain.gateway.StockPriceGateway;
 import com.leadsIq.stockPriceAnalytics.infra.repository.StockPriceRepository;
+import com.leadsIq.stockPriceAnalytics.infra.repository.entity.StockPriceEntity;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,5 +25,11 @@ public class StockPriceGatewayImpl implements StockPriceGateway {
             .orElseThrow(() -> new EntityNotFoundException(
                 String.format(STOCK_PRICE_NOT_FOUND_ERROR_MESSAGE, symbol, date)))
             .toDomain();
+    }
+
+    @Override
+    public List<StockPrice> findByDateRange(LocalDate startDate, LocalDate endDate) {
+        return stockPriceRepository.findByDateBetween(startDate, endDate).stream()
+            .map(StockPriceEntity::toDomain).toList();
     }
 }

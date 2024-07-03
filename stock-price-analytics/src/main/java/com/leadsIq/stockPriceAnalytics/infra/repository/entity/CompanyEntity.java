@@ -21,8 +21,6 @@ public class CompanyEntity {
     @Column(unique = true, nullable = false)
     private String symbol;
 
-    private String name;
-
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

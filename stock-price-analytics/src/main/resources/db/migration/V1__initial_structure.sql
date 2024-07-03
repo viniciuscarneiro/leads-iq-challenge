@@ -1,7 +1,6 @@
 CREATE TABLE company (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          symbol VARCHAR(10) UNIQUE NOT NULL,
-                         name VARCHAR(255),
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

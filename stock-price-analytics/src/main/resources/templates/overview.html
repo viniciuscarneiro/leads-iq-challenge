@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Stock Price Overview</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function toggleButtonState() {
+                var weekValue = $('#week').val();
+                var submitButton = $('button[type="submit"]');
+                if (weekValue) {
+                    submitButton.prop('disabled', false);
+                } else {
+                    submitButton.prop('disabled', true);
+                }
+            }
+            toggleButtonState();
+            $('#week').on('input', function() {
+                toggleButtonState();
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Stock Price Overview</h1>
+
+    <form method="get" action="/overview">
+        <div class="form-group">
+            <label for="week">Select Week:</label>
+            <input type="week" class="form-control" id="week" name="week" th:value="${week}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Stock Symbol</th>
+            <th>Average Open Price</th>
+            <th>Average Close Price</th>
+            <th>Average High Price</th>
+            <th>Average Low Price</th>
+            <th>Average Volume</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stockPrice : ${stockPrices}">
+            <td th:text="${stockPrice.company}"></td>
+            <td th:text="${#numbers.formatDecimal(stockPrice.open, 2,2)}"></td>
+            <td th:text="${#numbers.formatDecimal(stockPrice.close, 2,2)}"></td>
+            <td th:text="${#numbers.formatDecimal(stockPrice.high, 2,2)}"></td>
+            <td th:text="${#numbers.formatDecimal(stockPrice.low, 2,2)}"></td>
+            <td th:text="${stockPrice.volume}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

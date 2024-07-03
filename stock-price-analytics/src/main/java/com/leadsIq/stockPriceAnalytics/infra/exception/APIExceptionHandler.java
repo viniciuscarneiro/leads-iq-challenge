@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.leadsIq.stockPriceAnalytics.domain.exception.ClientException;
 import com.leadsIq.stockPriceAnalytics.domain.exception.EntityNotFoundException;
 import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,13 @@ import lombok.val;
 @ControllerAdvice
 @Slf4j
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(ClientException.class)
+    public ResponseEntity<ErrorResponse> handleClientException(ClientException ex) {
+        log.warn(ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(new ErrorResponse(ex.getMessage()));
+    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
