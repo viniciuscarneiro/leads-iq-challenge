@@ -7,8 +7,8 @@
     <script>
         $(document).ready(function() {
             function toggleButtonState() {
-                var weekValue = $('#week').val();
-                var submitButton = $('button[type="submit"]');
+                const weekValue = $('#week').val();
+                const submitButton = $('button[type="submit"]');
                 if (weekValue) {
                     submitButton.prop('disabled', false);
                 } else {
