@@ -1,4 +1,4 @@
-package com.leadsIq.stockPriceAnalytics.infra.adapter.external;
+package com.leadsIq.stockPriceAnalytics.infra.adapter.external.alphavantage;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

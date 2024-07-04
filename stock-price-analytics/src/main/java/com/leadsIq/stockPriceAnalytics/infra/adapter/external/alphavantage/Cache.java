@@ -1,4 +1,4 @@
-package com.leadsIq.stockPriceAnalytics.infra.adapter.external;
+package com.leadsIq.stockPriceAnalytics.infra.adapter.external.alphavantage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;

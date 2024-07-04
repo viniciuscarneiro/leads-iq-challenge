@@ -1,6 +1,5 @@
 package com.leadsIq.stockPriceAnalytics.infra.adapter.gateway;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +7,7 @@ import com.leadsIq.stockPriceAnalytics.domain.entity.CollectDataFilter;
 import com.leadsIq.stockPriceAnalytics.domain.entity.StockPrice;
 import com.leadsIq.stockPriceAnalytics.domain.gateway.DataCollectorGateway;
 import com.leadsIq.stockPriceAnalytics.infra.adapter.StockDataProcessor;
-import com.leadsIq.stockPriceAnalytics.infra.adapter.external.AlphaVantageApi;
+import com.leadsIq.stockPriceAnalytics.infra.adapter.external.alphavantage.AlphaVantageApi;
 import com.leadsIq.stockPriceAnalytics.infra.repository.CompanyRepository;
 import com.leadsIq.stockPriceAnalytics.infra.repository.StockPriceRepository;
 import com.leadsIq.stockPriceAnalytics.infra.repository.entity.CompanyEntity;
@@ -22,18 +21,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AlphaVantageDataCollectorGatewayImpl implements DataCollectorGateway {
 
-    private final AlphaVantageApi alphaVantageService;
+    private final AlphaVantageApi alphaVantageApi;
     private final StockDataProcessor stockDataProcessor;
     private final CompanyRepository companyRepository;
     private final StockPriceRepository stockPriceRepository;
-    @Value("${alphavantage.api.key}")
-    private String apiKey;
+    private final String apiKey;
 
     @Override
     public void collectStockData(CollectDataFilter collectDataFilter) {
         for (String symbol : collectDataFilter.symbols()) {
             Map<String, Map<String, Object>> apiResponse =
-                alphaVantageService.getStockData("TIME_SERIES_DAILY", symbol, apiKey, "full");
+                alphaVantageApi.getStockData("TIME_SERIES_DAILY", symbol, apiKey, "full");
             Set<StockPrice> stockPrices =
                 stockDataProcessor.processStockData(collectDataFilter.startDate(), apiResponse);
             CompanyEntity companyEntity = companyRepository.findBySymbol(symbol).orElseGet(() -> {
@@ -42,7 +40,6 @@ public class AlphaVantageDataCollectorGatewayImpl implements DataCollectorGatewa
                 newCompanyEntity.setCreatedAt(LocalDateTime.now());
                 return companyRepository.save(newCompanyEntity);
             });
-
             for (StockPrice stockPrice : stockPrices) {
                 try {
                     stockPriceRepository.save(StockPriceEntity.of(stockPrice, companyEntity));

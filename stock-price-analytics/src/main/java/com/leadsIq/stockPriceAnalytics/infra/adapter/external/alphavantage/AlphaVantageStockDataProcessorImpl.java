@@ -1,4 +1,4 @@
-package com.leadsIq.stockPriceAnalytics.infra.adapter.external;
+package com.leadsIq.stockPriceAnalytics.infra.adapter.external.alphavantage;
 
 import org.springframework.stereotype.Component;
 
