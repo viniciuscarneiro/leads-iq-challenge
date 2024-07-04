@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class Cache {
 
-
     public static Map<String, Map<String, Object>> getData(String symbol) {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader()
             .getResourceAsStream("cache/%s.json".formatted(symbol))) {

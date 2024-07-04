@@ -25,19 +25,6 @@ public class AlphaVantageStockDataProcessorImpl implements StockDataProcessor {
     private static final String CLOSE_KEY = "4. close";
     private static final String VOLUME_KEY = "5. volume";
 
-    @Override
-    public Set<StockPrice> processStockData(LocalDate startDate, Object stockData) {
-        var data = (Map<String, Map<String, Object>>) stockData;
-        var endDate = startDate.plusWeeks(3);
-        return startDate
-            .datesUntil(endDate)
-            .map(localDate -> localDate.format(DateTimeFormatter.ISO_DATE))
-            .map(date -> buildPairOfDateAndResult(date, data))
-            .filter(result -> result.getValue().isPresent())
-            .map(result -> parseToStockPriceModel(data, result))
-            .collect(Collectors.toUnmodifiableSet());
-    }
-
     private static AbstractMap.SimpleEntry<String, Optional<Object>> buildPairOfDateAndResult(
         String date, Map<String, Map<String, Object>> apiResponse) {
         return new AbstractMap.SimpleEntry<>(date,
@@ -57,6 +44,19 @@ public class AlphaVantageStockDataProcessorImpl implements StockDataProcessor {
             Double.parseDouble(dailyResult.get(CLOSE_KEY).toString()),
             Long.parseLong(dailyResult.get(VOLUME_KEY).toString()));
 
+    }
+
+    @Override
+    public Set<StockPrice> processStockData(LocalDate startDate, Object stockData) {
+        var data = (Map<String, Map<String, Object>>) stockData;
+        var endDate = startDate.plusWeeks(3);
+        return startDate
+            .datesUntil(endDate)
+            .map(localDate -> localDate.format(DateTimeFormatter.ISO_DATE))
+            .map(date -> buildPairOfDateAndResult(date, data))
+            .filter(result -> result.getValue().isPresent())
+            .map(result -> parseToStockPriceModel(data, result))
+            .collect(Collectors.toUnmodifiableSet());
     }
 
 

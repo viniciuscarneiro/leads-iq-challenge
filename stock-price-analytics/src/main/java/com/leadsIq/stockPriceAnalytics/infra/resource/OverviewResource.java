@@ -39,7 +39,8 @@ public class OverviewResource {
         try {
             LocalDate startDate;
             if (week != null) {
-                startDate = LocalDate.parse(week + "-1", DateTimeFormatter.ofPattern("YYYY-'W'ww-e"));
+                startDate =
+                    LocalDate.parse(week + "-1", DateTimeFormatter.ofPattern("YYYY-'W'ww-e"));
             } else {
                 startDate =
                     LocalDate.now().with(WeekFields.of(Locale.getDefault()).getFirstDayOfWeek());

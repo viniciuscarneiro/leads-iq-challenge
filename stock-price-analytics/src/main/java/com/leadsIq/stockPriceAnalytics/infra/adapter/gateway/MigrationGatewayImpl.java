@@ -27,7 +27,8 @@ public class MigrationGatewayImpl implements MigrationGateway {
     }
 
     private void retry(FlywayException e) {
-        if (e.getMessage().contains("no schema history table")) { // need to run baseline first to set up the table
+        if (e.getMessage().contains(
+            "no schema history table")) { // need to run baseline first to set up the table
             flyway.baseline(); // then try to run the migrations again
             flyway.migrate();
         } else {

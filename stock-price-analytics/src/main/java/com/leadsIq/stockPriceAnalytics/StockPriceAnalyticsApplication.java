@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class StockPriceAnalyticsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StockPriceAnalyticsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StockPriceAnalyticsApplication.class, args);
+    }
 }

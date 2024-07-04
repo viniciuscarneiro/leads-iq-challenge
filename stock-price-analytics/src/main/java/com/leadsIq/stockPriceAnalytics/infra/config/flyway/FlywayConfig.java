@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class FlywayConfig {
 
     @Bean
-    public org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer flywayInitializer(Flyway flyway,
-                                                                                                      ObjectProvider<FlywayMigrationStrategy> migrationStrategy) {
+    public org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer flywayInitializer(
+        Flyway flyway,
+        ObjectProvider<FlywayMigrationStrategy> migrationStrategy) {
         return new FlywayMigrationInitializer(flyway, migrationStrategy.getIfAvailable());
     }
 }

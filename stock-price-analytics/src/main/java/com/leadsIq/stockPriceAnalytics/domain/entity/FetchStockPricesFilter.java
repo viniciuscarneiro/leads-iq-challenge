@@ -3,4 +3,5 @@ package com.leadsIq.stockPriceAnalytics.domain.entity;
 import java.time.LocalDate;
 
 
-public record FetchStockPricesFilter(LocalDate startDate, LocalDate endDate) { }
+public record FetchStockPricesFilter(LocalDate startDate, LocalDate endDate) {
+}
