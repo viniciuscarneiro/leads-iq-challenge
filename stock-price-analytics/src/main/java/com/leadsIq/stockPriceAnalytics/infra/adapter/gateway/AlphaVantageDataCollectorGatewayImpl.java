@@ -1,5 +1,7 @@
 package com.leadsIq.stockPriceAnalytics.infra.adapter.gateway;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.leadsIq.stockPriceAnalytics.domain.entity.CollectDataFilter;
@@ -24,12 +26,16 @@ public class AlphaVantageDataCollectorGatewayImpl implements DataCollectorGatewa
     private final StockDataProcessor stockDataProcessor;
     private final CompanyRepository companyRepository;
     private final StockPriceRepository stockPriceRepository;
+    @Value("${alphavantage.api.key}")
+    private String apiKey;
 
     @Override
     public void collectStockData(CollectDataFilter collectDataFilter) {
         for (String symbol : collectDataFilter.symbols()) {
-            Map<String, Map<String, Object>> apiResponse = alphaVantageService.getStockData(symbol);
-            Set<StockPrice> stockPrices = stockDataProcessor.processStockData(collectDataFilter.startDate(), apiResponse);
+            Map<String, Map<String, Object>> apiResponse =
+                alphaVantageService.getStockData("TIME_SERIES_DAILY", symbol, apiKey, "full");
+            Set<StockPrice> stockPrices =
+                stockDataProcessor.processStockData(collectDataFilter.startDate(), apiResponse);
             CompanyEntity companyEntity = companyRepository.findBySymbol(symbol).orElseGet(() -> {
                 CompanyEntity newCompanyEntity = new CompanyEntity();
                 newCompanyEntity.setSymbol(symbol);
@@ -38,9 +44,13 @@ public class AlphaVantageDataCollectorGatewayImpl implements DataCollectorGatewa
             });
 
             for (StockPrice stockPrice : stockPrices) {
-                stockPriceRepository.save(
-                    StockPriceEntity.of(
-                        stockPrice, companyEntity));
+                try {
+                    stockPriceRepository.save(StockPriceEntity.of(stockPrice, companyEntity));
+                } catch (DataIntegrityViolationException e) {
+                    if (!e.getMessage().contains("stock_price.unique_company_id_date")) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }

@@ -17,10 +17,14 @@ repositories {
 	mavenCentral()
 }
 
+extra["springCloudVersion"] = "2023.0.2"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+	implementation ("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
 	implementation("org.flywaydb:flyway-core:10.11.0")
 	implementation("org.flywaydb:flyway-mysql:10.12.0")
 
@@ -34,6 +38,12 @@ dependencies {
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
 }
 
 tasks.withType<Test> {
