@@ -21,5 +21,26 @@ services:
       - $MYSQLDB_LOCAL_PORT
     volumes:
       - leads-iq-db:/var/lib/mysql
+  stock-price-analytics:
+    networks:
+      - leads-iq-network
+    depends_on:
+      - db
+    build:
+      context: ./stock-price-analytics
+      dockerfile: Dockerfile
+    image: stock-price-analytics
+    container_name: stock-price-analytics-api
+    restart: unless-stopped
+    ports:
+      - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
+    env_file: ./.env
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: $MYSQLDB_LOCAL_PORT
+      DB_NAME: $MYSQLDB_DATABASE
+      MYSQL_USER: $MYSQLDB_USER
+      MYSQL_PASSWORD: $MYSQLDB_PASSWORD
+      SERVER_PORT: $SPRING_LOCAL_PORT
 volumes:
   leads-iq-db:
